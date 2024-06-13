@@ -30,8 +30,6 @@ export ACCOUNT_FACTORY_PORTFOLIO=`aws servicecatalog list-portfolios --region $A
 AWSAFTEXECUTION_ROLE="arn:aws:iam::${ACCOUNT_ID}:role/AWSAFTExecution"
 aws servicecatalog associate-principal-with-portfolio --portfolio-id $ACCOUNT_FACTORY_PORTFOLIO --principal-arn $AWSAFTEXECUTION_ROLE --principal-type IAM --region $AWS_REGION
 
-
-
 Confirm that the portfolio is shared successfully by running command below.(To be executed in ControlTower Management Account)
 aws servicecatalog list-principals-for-portfolio --portfolio-id $ACCOUNT_FACTORY_PORTFOLIO --region $AWS_REGION | jq -r '.Principals[] | .PrincipalARN' | grep AWSAFTExecution -q && echo "Portfolio shared to AWSAFTExecution" || echo "Portfolio not shared properly"
 
