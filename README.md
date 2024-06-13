@@ -15,6 +15,7 @@ Attempting to automatically open the SSO authorization page in your default brow
 https://device.sso.us-west-2.amazonaws.com/
 Then enter the code:
  QCFK-N451 //whatever random code is generated
+ 
 
 To refresh the session token(On Local Laptop)
 aws sso login --sso-session veru-test-1
