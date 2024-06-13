@@ -1,7 +1,7 @@
 # Control_Tower_AFT
 
 Workshop : https://catalog.workshops.aws/control-tower/en-US/customization/aft/workflow
-
+ 
 For SSO config on CLI access(On Local Laptop)
 https://docs.aws.amazon.com/cli/latest/userguide/sso-configure-profile-token.html
 $ aws configure sso
