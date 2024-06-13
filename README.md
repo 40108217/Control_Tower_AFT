@@ -50,24 +50,24 @@ git commit -m 'first commit'
 git branch -m $AFT_ACCOUNT_CUSTOMIZATIONS_BRANCH
 git push --set-upstream origin $AFT_ACCOUNT_CUSTOMIZATIONS_BRANCH
 
-From your IDE, navigate to the aft-account-customizations directory. Examine the repo folder structure
+From your IDE, navigate to the aft-account-customizations directory. Examine the repo folder structure
 aft-account-customizations/
 ├── PRODUCTION
-│   ├── api_helpers
-│   │   ├── post-api-helpers.sh
-│   │   ├── pre-api-helpers.sh
-│   │   └── python
-│   │       └── requirements.txt
-│   └── terraform
-│       ├── aft-providers.jinja
-│       ├── backend.jinja
-│       └── main.tf
+│   ├── api_helpers
+│   │   ├── post-api-helpers.sh
+│   │   ├── pre-api-helpers.sh
+│   │   └── python
+│   │       └── requirements.txt
+│   └── terraform
+│       ├── aft-providers.jinja
+│       ├── backend.jinja
+│       └── main.tf
 └── SANDBOX
     ├── api_helpers
-    │   ├── post-api-helpers.sh
-    │   ├── pre-api-helpers.sh
-    │   └── python
-    │       └── requirements.txt
+    │   ├── post-api-helpers.sh
+    │   ├── pre-api-helpers.sh
+    │   └── python
+    │       └── requirements.txt
     └── terraform
         ├── aft-providers.jinja
         ├── backend.jinja
@@ -105,7 +105,7 @@ git branch -m $AFT_PROVISIONING_CUSTOMIZATIONS_BRANCH
 git push --set-upstream origin $AFT_PROVISIONING_CUSTOMIZATIONS_BRANCH
 
 Account Requests
-To create and update AWS account using AFT, you use the aft-account-request Terraform module. You need to provide mandatory input such as account root email address and the organizational unit (OU). Each time you add or modify account request, the Terraform file is commited to the repository and it will trigger the AFT pipeline
+To create and update AWS account using AFT, you use the aft-account-request Terraform module. You need to provide mandatory input such as account root email address and the organizational unit (OU). Each time you add or modify account request, the Terraform file is commited to the repository and it will trigger the AFT pipeline
 cd ~/environment/
 AWS_REGION=us-east-1
 AFT_ACCOUNT_REQUEST_REPO=`aws ssm get-parameter --name /aft/config/account-request/repo-name --region $AWS_REGION | jq -r ".Parameter.Value"`
@@ -122,11 +122,11 @@ git branch -m $AFT_ACCOUNT_REQUEST_BRANCH
 git push --set-upstream origin $AFT_ACCOUNT_REQUEST_BRANCH
 
 Provision an Account
-Let's submit a new account request. We will use vending account email address that you supplied as part of the pre-requisites on part 1.
+Let's submit a new account request. We will use vending account email address that you supplied as part of the pre-requisites on part 1.
 1. Login to your AFT Management account using AWS SSO role with Administrator access.
-2. From your IDE, navigate to the aft-account-request/terraform directory.
-3. Create a new file, give it a name account-requests.tf
-4. Add the Terraform code below. Change the placeholder {{PLACEHOLDER NAME}} with your own value, for example for account email, name, OU and SSO. Be sure to set account_customizations_name with either PRODUCTION or SANDBOX. Feel free to modify other values such as tags and custom fields.
+2. From your IDE, navigate to the aft-account-request/terraform directory.
+3. Create a new file, give it a name account-requests.tf
+4. Add the Terraform code below. Change the placeholder {{PLACEHOLDER NAME}} with your own value, for example for account email, name, OU and SSO. Be sure to set account_customizations_name with either PRODUCTION or SANDBOX. Feel free to modify other values such as tags and custom fields.
 module "account_request_01" {
   source = "./modules/aft-account-request"
 
@@ -187,13 +187,13 @@ git push origin $AFT_ACCOUNT_REQUEST_BRANCH
 
 To allow AFT to update and manage other AWS accounts alternate contacts
 1. Login to your AWS Control Tower Management account using AWS SSO role with Administrator access.
-2. Open your CloudShell  .
-Enter command below to delegate the AFT Management account as the administrator to manage alternate contacts. Replace {{AFT-MANAGEMENT-ACCOUNT}} with your AFT Management account id.
+2. Open your CloudShell  .
+Enter command below to delegate the AFT Management account as the administrator to manage alternate contacts. Replace {{AFT-MANAGEMENT-ACCOUNT}} with your AFT Management account id.
 aws organizations enable-aws-service-access --service-principal account.amazonaws.com
 aws organizations register-delegated-administrator --account-id 730335566898 --service-principal account.amazonaws.com 
 Implement a Customizations
 1. Login to your AFT Management account using AWS SSO role with Administrator access.
-2. Run commands below to import the aft-alternate-contacts module.
+2. Run commands below to import the aft-alternate-contacts module.
 
 cd ~/environment/
 AWS_REGION=us-east-1
@@ -210,7 +210,7 @@ cd /Users/virendra.singh/Downloads/CT_AFT/environment/$AFT_PROVISIONING_CUSTOMIZ
 touch ./terraform/main.tf
 touch ./terraform/data.tf
 
-Open the main.tf file under terraform directory. Add the code below to the file to launch the module. Don't forget to replace placeholder for {{CT-MANAGEMENT-ACCOUNT}} with your AWS Control Tower Management account id and {{CT-ORGANIZATIONS-ID}} with your AWS Org id
+Open the main.tf file under terraform directory. Add the code below to the file to launch the module. Don't forget to replace placeholder for {{CT-MANAGEMENT-ACCOUNT}} with your AWS Control Tower Management account id and {{CT-ORGANIZATIONS-ID}} with your AWS Org id
 
 module "alternate-contacts" {
   source = "./modules/aft-alternate-contacts"
@@ -218,11 +218,11 @@ module "alternate-contacts" {
   aws_ct_mgt_org_id = "o-bzte7hbcs0"
  }
 
-Open the data.tf file under terraform directory and add code below to the file
+Open the data.tf file under terraform directory and add code below to the file
 data "aws_region" "aft_management_region" {}
 data "aws_caller_identity" "aft_management_id" {}
 
-Replace the content on file customizations.asl.json under terraform/states with code below. Dont forget to save it.
+Replace the content on file customizations.asl.json under terraform/states with code below. Dont forget to save it.
 {
   "StartAt": "Pass",
   "States": {
@@ -242,7 +242,7 @@ Replace the content on file customizations.asl.json under terraform/states wi
   }
 }
 
-Open file states.tf under terraform directory. Replace the file content with the following code.
+Open file states.tf under terraform directory. Replace the file content with the following code.
 resource "aws_sfn_state_machine" "aft_account_provisioning_customizations" {
   name       = "aft-account-provisioning-customizations"
   role_arn   = aws_iam_role.aft_states.arn
@@ -255,7 +255,7 @@ resource "aws_sfn_state_machine" "aft_account_provisioning_customizations" {
 }
 
 
-Open file iam-aft-states.tpl under terraform/iam/role-policies directory. Replace the file content with the following code
+Open file iam-aft-states.tpl under terraform/iam/role-policies directory. Replace the file content with the following code
 
 {
     "Version": "2012-10-17",
@@ -289,7 +289,7 @@ Open file iam-aft-states.tpl under terraform/iam/role-policies directory. Re
     ]
 }
 
-Open file iam.tf under terraform directory and replace the content with the following code
+Open file iam.tf under terraform directory and replace the content with the following code
 resource "aws_iam_role" "aft_states" {
   name               = "aft-account-provisioning-customizations-role"
   assume_role_policy = templatefile("${path.module}/iam/trust-policies/states.tpl", { none = "none" })
@@ -313,9 +313,9 @@ git push origin $AFT_ACCOUNT_CUSTOMIZATIONS_BRANCH
 
 Validate the Customization
 1. Login to your AFT Management account using AWS SSO role with Administrator access.
-2. From your IDE, navigate to the aft-account-request/terraform directory.
-3. Open your existing account-requests.tf file (or if you use different file name for account request, use that file)
-4. From your existing account request, add alternate_contact section to the custom_fields parameter. Use reference below as example and modify it accordingly:
+2. From your IDE, navigate to the aft-account-request/terraform directory.
+3. Open your existing account-requests.tf file (or if you use different file name for account request, use that file)
+4. From your existing account request, add alternate_contact section to the custom_fields parameter. Use reference below as example and modify it accordingly:
 module "account_request_01" {
   source = "./modules/aft-account-request"
 
@@ -416,13 +416,13 @@ git push origin $AFT_ACCOUNT_REQUEST_BRANCH
 Clean Up
 Decommission the aft-alternate-contacts
 To decommission this customization, do the following:
-1. From your Cloud9, navigate to the aft-account-provisioning-customizations repository. Expand the terraform directory.
-2. Delete the modules directory.
-3. Delete both main.tf and data.tf.
+1. From your Cloud9, navigate to the aft-account-provisioning-customizations repository. Expand the terraform directory.
+2. Delete the modules directory.
+3. Delete both main.tf and data.tf.
 
 Warning
 steps below assumes you have default aft-account-provisioning-customizations without any customization.
-4. Update states.tf file with its original content.
+4. Update states.tf file with its original content.
 resource "aws_sfn_state_machine" "aft_account_provisioning_customizations" {
   name       = "aft-account-provisioning-customizations"
   role_arn   = aws_iam_role.aft_states.arn
@@ -430,7 +430,7 @@ resource "aws_sfn_state_machine" "aft_account_provisioning_customizations" {
   })
 }
 
-5. Update iam.tf file with its original content.
+5. Update iam.tf file with its original content.
 resource "aws_iam_role" "aft_states" {
   name               = "aft-account-provisioning-customizations-role"
   assume_role_policy = templatefile("${path.module}/iam/trust-policies/states.tpl", { none = "none" })
@@ -445,7 +445,7 @@ resource "aws_iam_role_policy" "aft_states" {
   })
 }
 
-6. Update iam/role-policies/iam-aft-states.tpl file with its original content.
+6. Update iam/role-policies/iam-aft-states.tpl file with its original content.
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -457,7 +457,7 @@ resource "aws_iam_role_policy" "aft_states" {
     ]
 }
 
-7. Update states/customizations.asl.json file with its original content.
+7. Update states/customizations.asl.json file with its original content.
 {
     "StartAt": "Pass",
     "States": {
@@ -469,20 +469,21 @@ resource "aws_iam_role_policy" "aft_states" {
 }
 
 8. Commit to the repository to revert the changes.
-9. Login to the target AWS account that you use for the test earlier. Update the alternate contacts to it's original value. Use this instruction   as additional guide.
+9. Login to the target AWS account that you use for the test earlier. Update the alternate contacts to it's original value. Use this instruction   as additional guide.
 Remove account vended from AFT
-1. Please refer to documentation on how to remove account from AFT 
-2. Note that removing account from AFT does not automatically decomission it from AWS Control. Use the following documentation to unmanage account from AWS Control Tower 
+1. Please refer to documentation on how to remove account from AFT 
+2. Note that removing account from AFT does not automatically decomission it from AWS Control. Use the following documentation to unmanage account from AWS Control Tower 
 Destroy AFT pipeline
 1. To remove AFT, login to your AWS Control Tower Management account and use the Cloud9 that you provisioned on Lab 1.
-2. Run terraform destroy to remove the AFT pipeline.
+2. Run terraform destroy to remove the AFT pipeline.
 Destroy Cloud9 in AFT Management account
 1. Return to your CloudShell in AFT Management account
-2. Run terraform destroy under aft-cloud9 workspace
+2. Run terraform destroy under aft-cloud9 workspace
 Destroy Cloud9 in AWS Control Tower Management account
 
 Important
 Do this only after AFT has been removed succesfully.
 1. Return to your CloudShell in AWS CT Management account
-2. Run terraform destroy under aft-cloud9 workspace
+2. Run terraform destroy under aft-cloud9 workspace
 
+![image](https://github.com/40108217/Control_Tower_AFT/assets/59229710/38a6e272-297d-4bb3-98a8-d8cdec5cfb84)
