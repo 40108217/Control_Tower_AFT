@@ -4,19 +4,16 @@ Workshop : https://catalog.workshops.aws/control-tower/en-US/customization/aft/w
 
 For SSO config on CLI access(On Local Laptop)
 https://docs.aws.amazon.com/cli/latest/userguide/sso-configure-profile-token.html
-1. $ aws configure sso
-2. SSO session name (Recommended): my-sso
-3. SSO start URL [None]: https://my-sso-portal.awsapps.com/start
-4. SSO region [None]: us-east-1
-5. SSO registration scopes [None]: sso:account:access 
-6. The AWS CLI attempts to open your default browser and begin the login process for your IAM Identity Center account.
-7. Attempting to automatically open the SSO authorization page in your default browser.  If the AWS CLI cannot open the browser, the following message appears with instructions on how to manually start the login process. If the browser does not open or you wish to use a different device to authorize this request, open the following URL:
-8.  
-9. https://device.sso.us-west-2.amazonaws.com/
-10. 
-11. Then enter the code:
-12. 
-13. QCFK-N451
+$ aws configure sso
+SSO session name (Recommended): my-sso
+SSO start URL [None]: https://my-sso-portal.awsapps.com/start
+SSO region [None]: us-east-1
+SSO registration scopes [None]: sso:account:access 
+The AWS CLI attempts to open your default browser and begin the login process for your IAM Identity Center account.
+Attempting to automatically open the SSO authorization page in your default browser.  If the AWS CLI cannot open the browser, the following message appears with instructions on how to manually start the login process. If the browser does not open or you wish to use a different device to authorize this request, open the following URL:
+https://device.sso.us-west-2.amazonaws.com/
+Then enter the code:
+ QCFK-N451 //whatever random code is generated
 
 To refresh the session token(On Local Laptop)
 aws sso login --sso-session veru-test-1
